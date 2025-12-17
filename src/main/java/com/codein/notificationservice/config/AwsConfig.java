@@ -3,6 +3,7 @@ package com.codein.notificationservice.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.ContainerCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ses.SesClient;
 import software.amazon.awssdk.services.sns.SnsClient;
@@ -14,7 +15,7 @@ public class AwsConfig {
     public SesClient sesClient() {
         return SesClient.builder()
                 .region(Region.AP_SOUTHEAST_1)
-                .credentialsProvider(DefaultCredentialsProvider.create())
+                .credentialsProvider(ContainerCredentialsProvider.builder().build())
                 .build();
     }
 
