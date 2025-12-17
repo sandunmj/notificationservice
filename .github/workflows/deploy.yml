@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: ap-southeast-1
   ECR_REPOSITORY: hospital_app/microservices
-  ECS_SERVICE: notificationservice-service
+  ECS_SERVICE: notification-service
   ECS_CLUSTER: hospital-app-cluster
   ECS_TASK_DEFINITION: notificationservice-task
 
