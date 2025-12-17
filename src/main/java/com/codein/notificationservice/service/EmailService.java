@@ -6,9 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ses.SesClient;
 import software.amazon.awssdk.services.ses.model.*;
 
@@ -21,24 +18,13 @@ public class EmailService {
     private final String fromEmail;
     
     public EmailService(EmailRecordRepository emailRecordRepository,
-                       @Value("${aws.region}") String region,
-                       @Value("${aws.accessKeyId}") String accessKeyId,
-                       @Value("${aws.secretKey}") String secretKey,
+                       SesClient sesClient,
                        @Value("${aws.ses.fromEmail}") String fromEmail) {
         this.emailRecordRepository = emailRecordRepository;
+        this.sesClient = sesClient;
         this.fromEmail = fromEmail;
         
-        logger.info("Initializing SES client with region: {}", region);
-        logger.info("From email: {}", fromEmail);
-        logger.info("Access Key ID: {}***", accessKeyId.substring(0, Math.min(4, accessKeyId.length())));
-        
-        this.sesClient = SesClient.builder()
-                .region(Region.of(region))
-                .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsBasicCredentials.create(accessKeyId, secretKey)))
-                .build();
-        
-        logger.info("SES client initialized successfully");
+        logger.info("EmailService initialized with fromEmail: {}", fromEmail);
     }
     
     public void sendEmail(String toEmail, String subject, String content) {
