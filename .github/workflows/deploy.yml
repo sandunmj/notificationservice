@@ -7,13 +7,16 @@ on:
 env:
   AWS_REGION: ap-southeast-1
   ECR_REPOSITORY: hospital_app/microservices
-  ECS_SERVICE: appointment-service
+  ECS_SERVICE: notificationservice-service
   ECS_CLUSTER: hospital-app-cluster
   ECS_TASK_DEFINITION: notificationservice-task
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     
     steps:
     - name: Checkout
